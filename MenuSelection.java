@@ -43,6 +43,11 @@ public class MenuSelection implements MenuElement {
         return asString;
     }
 
+    // for finding the right selection element in textmenu
+    public boolean matchesEnumClass(Class other) {
+        return this.enumClass.equals(other);
+    }
+
 	// clamps value between a minimum and maximum value
 	private static int clamp(int value, int min, int max) {
 		return Math.max(min, Math.min(max, value));

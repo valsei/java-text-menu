@@ -36,7 +36,7 @@ public class Main {
     public static void main(String[] args) {
 
         String input = "";
-        boolean running = false;
+        boolean running = true;
         
         /*Object[] e = EnumSet.allOf(option1.class).toArray();
         for (Object E : e) {
@@ -51,9 +51,15 @@ public class Main {
 
 
         TextMenu menu = new TextMenu();
-        //menu.add(new MenuSelection(option1.values()))
-        //    .add(new MenuSelection(option2.values()))
-        //    .add(new MenuSelection(option3.values()));
+        menu.add(new MenuHeader("colors"))
+            .add(new MenuSelection(option1.class))
+            .add(new MenuHeader("numbers!! YUH"))
+            .add(new MenuSelection(option2.class))
+            .add(new MenuHeader(""))
+            .add(new MenuHeader("STuff"))
+            .add(new MenuSelection(option3.class))
+            .add(new MenuHeader(""))
+            .add(new MenuHeader("hihi"));
 
         while (running) {
 
@@ -69,7 +75,7 @@ public class Main {
 				int x = input.matches("[ad]") ? inputMap.get(input) : 0;
 				int y = input.matches("[ws]") ? inputMap.get(input) : 0;
 				boolean select = input.matches("c");
-				menu.updateWithInput(x, y, select);
+				menu.updateWithInput(new MenuInput(x, y, select));
             }
         }
 

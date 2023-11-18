@@ -21,22 +21,10 @@ public class TextMenu {
 
 	public void updateWithInput(MenuInput input) {
         if (input.y != 0) {
-            elements.get(hoverRow).clearHover();
-            this.hoverRow = clamp(this.hoverRow + input.y, 0, elements.size() - 1);
-
-
+            hoverableElements.get(hoverRow).clearHover();
+            this.hoverRow = clamp(this.hoverRow + input.y, 0, hoverableElements.size() - 1);
         }
-		/*if (y != 0) {
-			elements.get(hoverRow).clearHover();
-			this.hoverRow = clamp(this.hoverRow + y, 0, elements.size()-1);
-			elements.get(hoverRow).startHover();
-		}
-		if (x != 0) {
-			elements.get(hoverRow).hover(x);
-		}
-		if (select) {
-			elements.get(hoverRow).select();
-		}*/
+        hoverableElements.get(hoverRow).updateWithInput(input);
 	}
 	
     public ArrayList<String> toListOfStrings() {
@@ -46,6 +34,8 @@ public class TextMenu {
         }
 		return list;
     }
+
+    
 
 	// clamps value between a minimum and maximum value
 	private static int clamp(int value, int min, int max) {
