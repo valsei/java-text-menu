@@ -3,6 +3,7 @@ import java.util.*;
 public class TextMenu {
 
     private ArrayList<MenuElement> elements = new ArrayList<>();
+    private ArrayList<MenuElement> hoverableElements = new ArrayList<>();
     private int hoverRow = 0;
 
     public TextMenu() {}
@@ -12,11 +13,20 @@ public class TextMenu {
 
     public TextMenu add(MenuElement element) {
         this.elements.add(element);
+        if (element.canHover()) {
+            this.hoverableElements.add(element);
+        }
         return this;
     }
 
-	public void updateWithInput(int x, int y, boolean select) {
-		if (y != 0) {
+	public void updateWithInput(MenuInput input) {
+        if (input.y != 0) {
+            elements.get(hoverRow).clearHover();
+            this.hoverRow = clamp(this.hoverRow + input.y, 0, elements.size() - 1);
+
+
+        }
+		/*if (y != 0) {
 			elements.get(hoverRow).clearHover();
 			this.hoverRow = clamp(this.hoverRow + y, 0, elements.size()-1);
 			elements.get(hoverRow).startHover();
@@ -26,7 +36,7 @@ public class TextMenu {
 		}
 		if (select) {
 			elements.get(hoverRow).select();
-		}
+		}*/
 	}
 	
     public ArrayList<String> toListOfStrings() {
@@ -36,15 +46,6 @@ public class TextMenu {
         }
 		return list;
     }
-
-	public Enum getResult(Class enumType) {
-		for (MenuElement element : elements) {
-			if (element.getType() == enumType) {
-				return element.getResult();
-			}
-		}
-		return null;
-	}
 
 	// clamps value between a minimum and maximum value
 	private static int clamp(int value, int min, int max) {

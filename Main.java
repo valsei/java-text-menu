@@ -1,5 +1,7 @@
 import java.util.*;
 
+import javax.swing.text.html.Option;
+
 public class Main {
 
     static Scanner userIn = new Scanner(System.in);
@@ -34,12 +36,24 @@ public class Main {
     public static void main(String[] args) {
 
         String input = "";
-        boolean running = true;
+        boolean running = false;
+        
+        /*Object[] e = EnumSet.allOf(option1.class).toArray();
+        for (Object E : e) {
+            switch (Enum.valueOf(option1.class, E.toString())) {
+                case RED:
+                case BLUE:
+                case GREEN:
+                case YELLOW:
+                    System.out.println(E);
+            }
+        }*/
+
 
         TextMenu menu = new TextMenu();
-        menu.add(new Selection(option1.values()))
-            .add(new Selection(option2.values()))
-            .add(new Selection(option3.values()));
+        //menu.add(new MenuSelection(option1.values()))
+        //    .add(new MenuSelection(option2.values()))
+        //    .add(new MenuSelection(option3.values()));
 
         while (running) {
 
@@ -59,16 +73,10 @@ public class Main {
             }
         }
 
-		System.out.println(menu.getResult(option1.class));
+		//System.out.println(menu.getResult(option1.class));
 
-        System.out.println("hello world!");
+        //System.out.println("hello world!");
 
-    }
-
-
-
-    public static void render() {
-        
     }
 
     // yoinked from random stack overflow thread

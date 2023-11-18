@@ -1,35 +1,35 @@
-public class Selection<T> implements MenuElement {
+import java.util.EnumSet;
+
+public class MenuSelection implements MenuElement {
 
     public int selectedIndex = -1;
     public int hoverIndex = -1;
-    private T[] options;
+    private Object[] options;
+    private Class enumClass;
 
-    public Selection(T[] options) {
+    // a couple type warnings but it's fine :)))
+    public MenuSelection(Class enumClass) {
+        if (!enumClass.isEnum()) {
+            throw new IllegalArgumentException("Parameter class must be of an enum");
+        }
+        this.enumClass = enumClass;
+        Object[] options = EnumSet.allOf(enumClass).toArray();
 		if (options == null || options.length < 1) {
 			throw new IllegalArgumentException("Selection must have at least one option");
 		}
 		this.options = options;
     }
 
-	public Class getType() {
-		return options.getClass();
-	}
-
 	// MenuElement interface required methods
 	public boolean canHover() { return true; }
+    public void clearHover() { this.hoverIndex = -1; }
 	
-	public void hover(int change) {
-		this.hoverIndex = clamp(this.hoverIndex + change, 0, this.options.length-1);
-	}
-	
-	public void select() { this.selectedIndex = this.hoverIndex; }
-	public void startHover() { this.hoverIndex = 0; }
-	public void clearHover() { this.hoverIndex = -1; }
-	public void clearSelect() { this.selectedIndex = -1; }
-
-	public Enum getResult() {
-		return (Enum)(selectedIndex != -1 ? options[selectedIndex] : null);
-	}
+	public void updateWithInput(MenuInput input) {
+        this.hoverIndex = clamp(this.hoverIndex + input.x, 0, this.options.length-1);
+        if (input.select) {
+            this.selectedIndex = this.hoverIndex;
+        }
+    }
 
 	// render the selection and hover into a string to display
     private static final String[] borders = {"  x "," >x "," [x]",">[x]"};
