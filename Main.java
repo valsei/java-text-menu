@@ -1,8 +1,17 @@
 import java.util.*;
 
-public class TextMenuMain {
+public class Main {
 
     static Scanner userIn = new Scanner(System.in);
+
+	public static final Map<String, Integer> inputMap =
+		Map.of(
+			"w", -1,
+			"s", 1,
+			"a", -1,
+			"d", 1
+		)
+	;
     
     public enum option1 {
         RED,
@@ -35,15 +44,22 @@ public class TextMenuMain {
         while (running) {
 
             clear();
-            menu.printToTelemetry();
+            for (String line : menu.toListOfStrings()) {
+				System.out.println(line);
+			}
             input = userIn.nextLine().toLowerCase();
 
             if (input.matches("quit|q")) {
                 running = false;
             } else if (input.matches("[wasdc]")) {
-                menu.moveHoverTemp(input);
+				int x = input.matches("[ad]") ? inputMap.get(input) : 0;
+				int y = input.matches("[ws]") ? inputMap.get(input) : 0;
+				boolean select = input.matches("c");
+				menu.updateWithInput(x, y, select);
             }
         }
+
+		System.out.println(menu.getResult(option1.class));
 
         System.out.println("hello world!");
 
