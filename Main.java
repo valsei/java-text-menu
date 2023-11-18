@@ -78,10 +78,15 @@ public class Main {
 				menu.updateWithInput(new MenuInput(x, y, select));
             }
         }
+        
+        System.out.println(menu.getSelection(option1.class));
+        System.out.println(menu.getSelection(option2.class));
+        System.out.println(menu.getSelection(option3.class));
 
-		//System.out.println(menu.getResult(option1.class));
-
-        //System.out.println("hello world!");
+        switch (menu.getSelection(option1.class)) {
+            case RED:
+            case YELLOW:
+        }
 
     }
 

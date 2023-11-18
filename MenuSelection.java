@@ -48,6 +48,11 @@ public class MenuSelection implements MenuElement {
         return this.enumClass.equals(other);
     }
 
+    // for reading the resulting enum's name
+    public String getSelectionString() {
+        return selectedIndex == -1 ? "" : options[selectedIndex].toString();
+    }
+
 	// clamps value between a minimum and maximum value
 	private static int clamp(int value, int min, int max) {
 		return Math.max(min, Math.min(max, value));

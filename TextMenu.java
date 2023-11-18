@@ -35,7 +35,20 @@ public class TextMenu {
 		return list;
     }
 
-    
+    public <T extends Enum<T>> getSelection(Class<T> enumClass) {
+        String enumName = "";
+        for (MenuElement sel : hoverableElements) {
+            if (sel instanceof MenuSelection &&
+                ((MenuSelection)sel).matchesEnumClass(enumClass)) {
+                enumName = ((MenuSelection)sel).getSelectionString();
+            }
+        }
+        try {
+            return Enum.valueOf(enumClass, enumName);
+        } catch (Exception IllegalArgumentException) {
+            return null;
+        }
+    }
 
 	// clamps value between a minimum and maximum value
 	private static int clamp(int value, int min, int max) {
