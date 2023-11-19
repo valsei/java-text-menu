@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class TextMenu {
 
@@ -35,19 +36,18 @@ public class TextMenu {
 		return list;
     }
 
-    public <T extends Enum<T>> getSelection(Class<T> enumClass) {
-        String enumName = "";
+    public <E extends Enum<E>> E getSelectionResult(Class<E> enumClass) {
         for (MenuElement sel : hoverableElements) {
             if (sel instanceof MenuSelection &&
-                ((MenuSelection)sel).matchesEnumClass(enumClass)) {
-                enumName = ((MenuSelection)sel).getSelectionString();
+                    ((MenuSelection)sel).matchesEnumClass(enumClass)) {
+                E selectedOption = ((MenuSelection)sel).getResult(enumClass);
+                if (selectedOption == null) {
+                    throw new NoSuchElementException("SelectionElement "+enumClass.toString()+" does not have a chosen option");
+                }
+                return selectedOption;
             }
         }
-        try {
-            return Enum.valueOf(enumClass, enumName);
-        } catch (Exception IllegalArgumentException) {
-            return null;
-        }
+        throw new NoSuchElementException("Could not find a selection element with enum "+enumClass.toString());
     }
 
 	// clamps value between a minimum and maximum value

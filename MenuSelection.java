@@ -5,17 +5,15 @@ public class MenuSelection implements MenuElement {
     public int selectedIndex = -1;
     public int hoverIndex = -1;
     private Object[] options;
-    private Class enumClass;
 
     // a couple type warnings but it's fine :)))
-    public MenuSelection(Class enumClass) {
+    public <E extends Enum<E>> MenuSelection(Class<E> enumClass) {
         if (!enumClass.isEnum()) {
             throw new IllegalArgumentException("Parameter class must be of an enum");
         }
-        this.enumClass = enumClass;
         Object[] options = EnumSet.allOf(enumClass).toArray();
 		if (options == null || options.length < 1) {
-			throw new IllegalArgumentException("Selection must have at least one option");
+			throw new IllegalArgumentException("Enum must have at least one option");
 		}
 		this.options = options;
     }
@@ -44,13 +42,17 @@ public class MenuSelection implements MenuElement {
     }
 
     // for finding the right selection element in textmenu
-    public boolean matchesEnumClass(Class other) {
-        return this.enumClass.equals(other);
+    public <E extends Enum<E>> boolean matchesEnumClass(Class<E> other) {
+        return this.options[0].getClass().equals(other);
     }
 
-    // for reading the resulting enum's name
-    public String getSelectionString() {
-        return selectedIndex == -1 ? "" : options[selectedIndex].toString();
+    // for reading the selected enum's name
+    public <E extends Enum<E>> E getResult(Class<E> enumClass) {
+        try {
+            return Enum.valueOf(enumClass, options[selectedIndex].toString());
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 	// clamps value between a minimum and maximum value

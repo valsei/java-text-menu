@@ -1,7 +1,5 @@
 import java.util.*;
 
-import javax.swing.text.html.Option;
-
 public class Main {
 
     static Scanner userIn = new Scanner(System.in);
@@ -63,7 +61,7 @@ public class Main {
 
         while (running) {
 
-            clear();
+            clear(5);
             for (String line : menu.toListOfStrings()) {
 				System.out.println(line);
 			}
@@ -79,20 +77,27 @@ public class Main {
             }
         }
         
-        System.out.println(menu.getSelection(option1.class));
-        System.out.println(menu.getSelection(option2.class));
-        System.out.println(menu.getSelection(option3.class));
+        System.out.println(menu.getSelectionResult(option1.class));
+        System.out.println(menu.getSelectionResult(option2.class));
+        System.out.println(menu.getSelectionResult(option3.class));
 
-        switch (menu.getSelection(option1.class)) {
-            case RED:
-            case YELLOW:
+        //switch (getEnumValue(option1.class, "RED")) {
+        switch (menu.getSelectionResult(option1.class)) {
+            case RED:System.out.println("red!");break;
+            case BLUE:System.out.println("blue!");break;
+            case GREEN:System.out.println("green!");break;
+            case YELLOW:System.out.println("yellow!");break;
         }
-
     }
 
     // yoinked from random stack overflow thread
     public static void clear() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+    }
+    public static void clear(int i) {
+        for (; i > 0; i--) {
+            System.out.println();
+        }
     }
 }
