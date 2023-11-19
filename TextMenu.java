@@ -17,27 +17,30 @@ public class TextMenu {
         if (element.canHover()) {
             this.hoverableElements.add(element);
         }
+        this.updateWithInput(new MenuInput());
         return this;
     }
 
 	public void updateWithInput(MenuInput input) {
         if (input.y != 0) {
-            hoverableElements.get(hoverRow).clearHover();
-            this.hoverRow = clamp(this.hoverRow + input.y, 0, hoverableElements.size() - 1);
+            this.hoverableElements.get(this.hoverRow).clearHover();
+            this.hoverRow = clamp(this.hoverRow + input.y, 0, this.hoverableElements.size() - 1);
         }
-        hoverableElements.get(hoverRow).updateWithInput(input);
+        if (!this.hoverableElements.isEmpty()) {
+            this.hoverableElements.get(this.hoverRow).updateWithInput(input);
+        }
 	}
 	
     public ArrayList<String> toListOfStrings() {
 		ArrayList<String> list = new ArrayList<>();
-        for (MenuElement element : elements) {
+        for (MenuElement element : this.elements) {
         	list.add(element.getAsString());
         }
 		return list;
     }
 
     public <E extends Enum<E>> E getSelectionResult(Class<E> enumClass) {
-        for (MenuElement sel : hoverableElements) {
+        for (MenuElement sel : this.hoverableElements) {
             if (sel instanceof MenuSelection &&
                     ((MenuSelection)sel).matchesEnumClass(enumClass)) {
                 E selectedOption = ((MenuSelection)sel).getResult(enumClass);
