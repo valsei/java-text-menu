@@ -53,6 +53,15 @@ public class TextMenu {
         throw new NoSuchElementException("Could not find a selection element with enum "+enumClass.toString());
     }
 
+    public boolean isCompleted() {
+        for (MenuElement sel : this.hoverableElements) {
+            if (sel instanceof MenuSelection && !((MenuSelection)sel).isCompleted()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 	// clamps value between a minimum and maximum value
 	private static int clamp(int value, int min, int max) {
 		return Math.max(min, Math.min(max, value));

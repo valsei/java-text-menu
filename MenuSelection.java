@@ -54,6 +54,10 @@ public class MenuSelection implements MenuElement {
             return null;
         }
     }
+    
+    public boolean isCompleted() {
+        return selectedIndex != -1;
+    }
 
 	// clamps value between a minimum and maximum value
 	private static int clamp(int value, int min, int max) {

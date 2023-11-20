@@ -27,53 +27,51 @@ public class Main {
     public enum option3 {
         HELLO_WORLD,
         GOODBYE,
-        SUSIPCIOUS,
-        AMONGUGSNGS,
+        SUSPICIOUS,
+        AMONGUS,
     }
 
     public static void main(String[] args) {
 
         String input = "";
         boolean running = true;
-        
-        /*Object[] e = EnumSet.allOf(option1.class).toArray();
-        for (Object E : e) {
-            switch (Enum.valueOf(option1.class, E.toString())) {
-                case RED:
-                case BLUE:
-                case GREEN:
-                case YELLOW:
-                    System.out.println(E);
-            }
-        }*/
-
 
         TextMenu menu = new TextMenu();
-        menu.add(new MenuHeader("colors"))
+        menu.add(new MenuHeader("The Robot Conroller app is obsolete. You should"))
+            .add(new MenuHeader("install the new version of this FTC season."))
+            .add(new MenuHeader("To ensure correct operation of the IMU in this"))
+            .add(new MenuHeader(""))
+            .add(new MenuHeader("colors"))
             .add(new MenuSelection(option1.class))
+            .add(new MenuHeader(""))
             .add(new MenuHeader("numbers!! YUH"))
             .add(new MenuSelection(option2.class))
             .add(new MenuHeader(""))
-            .add(new MenuHeader("STuff"))
-            .add(new MenuSelection(option3.class))
-            .add(new MenuHeader(""))
-            .add(new MenuHeader("hihi"));
+            .add(new MenuHeader("Stuff"))
+            .add(new MenuSelection(option3.class));
 
+        clear();
         while (running) {
 
-            clear(5);
             for (String line : menu.toListOfStrings()) {
 				System.out.println(line);
 			}
             input = userIn.nextLine().toLowerCase();
+            clear();
 
             if (input.matches("quit|q")) {
-                running = false;
+                if (menu.isCompleted()) {
+                    running = false;
+                } else {
+                    System.out.println(">>> You must complete the menu!\n");
+                }
             } else if (input.matches("[wasdc]")) {
 				int x = input.matches("[ad]") ? inputMap.get(input) : 0;
 				int y = input.matches("[ws]") ? inputMap.get(input) : 0;
 				boolean select = input.matches("c");
+
 				menu.updateWithInput(new MenuInput(x, y, select));
+
             }
         }
         
