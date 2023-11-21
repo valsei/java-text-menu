@@ -7,9 +7,10 @@ public class MenuInput {
     public MenuInput(int x, int y, boolean select) {
         update(x, y, select);
     }
-    public void update(int x, int y, boolean select) {
+    public MenuInput update(int x, int y, boolean select) {
         this.x = x;
         this.y = y;
         this.select = select;
+        return this;
     }
 }

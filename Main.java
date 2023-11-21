@@ -49,6 +49,8 @@ public class Main {
             .add(new MenuHeader(""))
             .add(new MenuHeader("Stuff"))
             .add(new MenuSelection(option3.class));
+        
+        MenuInput menuInput = new MenuInput();
 
         clear();
         while (running) {
@@ -70,7 +72,7 @@ public class Main {
 				int y = input.matches("[ws]") ? inputMap.get(input) : 0;
 				boolean select = input.matches("c");
 
-				menu.updateWithInput(new MenuInput(x, y, select));
+				menu.updateWithInput(menuInput.update(x, y, select));
 
             }
         }
