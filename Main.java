@@ -6,8 +6,8 @@ public class Main {
 
 	public static final Map<String, Integer> inputMap =
 		Map.of(
-			"w", -1,
-			"s", 1,
+			"w", 1,
+			"s", -1,
 			"a", -1,
 			"d", 1
 		)
