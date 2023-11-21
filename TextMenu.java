@@ -20,6 +20,15 @@ public class TextMenu {
         this.updateWithInput(new MenuInput());
         return this;
     }
+    public <E extends Enum<E>> TextMenu add(Class<E> enumClass) {
+        return this.add(new MenuSelection(enumClass));
+    }
+    public TextMenu add(String text) {
+        return this.add(new MenuHeader(text));
+    }
+    public TextMenu add() {
+        return this.add("");
+    }
 
 	public void updateWithInput(MenuInput input) {
         if (input.y != 0) {

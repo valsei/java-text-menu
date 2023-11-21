@@ -37,18 +37,18 @@ public class Main {
         boolean running = true;
 
         TextMenu menu = new TextMenu();
-        menu.add(new MenuHeader("The Robot Conroller app is obsolete. You should"))
-            .add(new MenuHeader("install the new version of this FTC season."))
-            .add(new MenuHeader("To ensure correct operation of the IMU in this"))
-            .add(new MenuHeader(""))
-            .add(new MenuHeader("colors"))
-            .add(new MenuSelection(option1.class))
-            .add(new MenuHeader(""))
-            .add(new MenuHeader("numbers!! YUH"))
-            .add(new MenuSelection(option2.class))
-            .add(new MenuHeader(""))
-            .add(new MenuHeader("Stuff"))
-            .add(new MenuSelection(option3.class));
+        menu.add("The Robot Controller app is obsolete. You should")
+            .add("install the new version of this FTC season.")
+            .add("To ensure correct operation of the IMU in this")
+            .add()
+            .add("colors")
+            .add(option1.class)
+            .add()
+            .add("numbers!! YUH")
+            .add(option2.class)
+            .add()
+            .add("Stuff")
+            .add(option3.class);
         
         MenuInput menuInput = new MenuInput();
 
@@ -94,10 +94,5 @@ public class Main {
     public static void clear() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
-    }
-    public static void clear(int i) {
-        for (; i > 0; i--) {
-            System.out.println();
-        }
     }
 }
