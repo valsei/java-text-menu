@@ -3,7 +3,7 @@ import java.util.*;
 public class Main {
 
     // test
-    
+
     static Scanner userIn = new Scanner(System.in);
 
 	public static final Map<String, Integer> inputMap =
