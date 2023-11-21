@@ -7,6 +7,15 @@ import java.util.NoSuchElementException;
  * choosing between enums via a controller.
  * <p>
  * By valsei!! [https://github.com/valsei/java-text-menu]
+ * <p>
+ * Intended usage is to remove the clutter of 8+ different
+ * autonomous programs to choose between. Now just choose one!
+ * <p>
+ * Create an autonomous framework method that makes decisions
+ * based on enums. Then, give those enums to this text menu
+ * and run it at the beginning of a single autonomous class.
+ * Once the menu is complete, run the framework method but replace
+ * any enum calls with menu.getSelectionResult(<enumClass>) calls.
  */
 public class TextMenu {
 
