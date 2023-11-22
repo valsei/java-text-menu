@@ -48,7 +48,9 @@ public class Main {
             .add(option2.class)
             .add()
             .add("Stuff")
-            .add(option3.class);
+            .add(option3.class)
+            .add()
+            .add(new MenuSlider("test", 0.0, 0.0, 10.0, 2.0));
         
         MenuInput menuInput = new MenuInput();
 

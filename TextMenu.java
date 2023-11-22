@@ -121,6 +121,7 @@ public class TextMenu {
         }
         throw new NoSuchElementException("Could not find a selection element with enum "+enumClass.toString());
     }
+    //public double getSliderResult()
 
     /**
      * checks if all the applicable menu elements have been filled out.
