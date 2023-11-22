@@ -1,34 +1,32 @@
-public class MenuSlider implements MenuElement {
+public class MenuSlider implements MenuElement{
 
-    private double value min, max, scale;
+	private double value, min, max, scale;
 
-    public MenuHeader(double defaultValue, double min, double max, double scale) {
-        this.value = defaultValue;
-        this.min = min;
-        this.max = max;
-        this.scale = scale;
-    }
+	public MenuSlider(double defaultValue, double min, double max, double scale) {
+		this.value = defaultValue;
+		this.min = min;
+		this.max = max;
+		this.scale = scale;
+	}
 
-    public String getAsString() {
-        String asString = this.value + " [";
-        double segmentSize = (this.max-this.min)/this.scale;//needs to be fixed
-        double valueSegment = this.value/(this.max-this.min);
-        for (int i = 0; i < this.scale; i++) {
-            asString += i <= valueSegment ? "/" : "-";
-        }
-        return asString + "]";
-    }
+	public String getAsString() {
+		String asString = "[/";
+		double sliderLength = (this.max - this.min) * this.scale;
+		for (int i = 0; i < Math.round(sliderLength); i++) {
+			asString += i < (this.value - this.min) * this.scale ? "/" : "-";
+		}
+		return asString + "] " + (Math.round(this.value * 10.0) / 10.0);
+	}
 
-    // MenuElement required methods
-    public boolean canHover() { return true; }
+	// MenuElement required methods
+	public boolean canHover() { return true; }
 
-    public void updateWithInput(MenuInput input) {
-        double segmentSize = (this.max-this.min)/this.scale;
-        double nextValue = value + segmentSize * input.x;
-        this.value = clamp(nextValue, this.min, this.max)
-    }
-    
-    public void clearHover() {}
+	public void updateWithInput(MenuInput input) {
+		double nextValue = this.value + input.x / this.scale;
+		this.value = clamp(nextValue, this.min, this.max);
+	}
+
+	public void clearHover() {}
 
 	// clamps value between a minimum and maximum value
 	private static double clamp(double value, double min, double max) {
