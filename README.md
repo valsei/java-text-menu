@@ -12,7 +12,7 @@ How to use: Create an autonomous framework method that makes decisions
 based on enums. Then, give those enums to this text menu
 and use it at the beginning of a single autonomous class.
 Once the menu is complete, run the framework method but replace
-any enum calls with menu.getSelectionResult(<enumClass>) calls.
+any enum calls with menu.getSelectionResult(yourEnum.class) calls.
 <p>
 Example code:
 
@@ -34,8 +34,12 @@ menu.add("Example Menu!")
     .add(Colors.class);
 ```
 ```java
-// .update() returns itself so you can update and use in one line
-menu.updateWithInput(menuInput.update(x, y, select));
+while (!menu.isCompleted()) {
+    // get input of x, y and select
+
+    // .update() returns itself so you can update and use in one line
+    menu.updateWithInput(menuInput.update(x, y, select));
+}
 ```
 ```java
 switch (menu.getSelectionResult(Colors.class)) {
