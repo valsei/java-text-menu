@@ -11,9 +11,9 @@ import java.util.NoSuchElementException;
  * Intended usage is to remove the clutter of 8+ different
  * autonomous programs to choose between. Now just choose one!
  * <p>
- * Create an autonomous framework method that makes decisions
+ * How to use: Create an autonomous framework method that makes decisions
  * based on enums. Then, give those enums to this text menu
- * and run it at the beginning of a single autonomous class.
+ * and use it at the beginning of a single autonomous class.
  * Once the menu is complete, run the framework method but replace
  * any enum calls with menu.getSelectionResult(<enumClass>) calls.
  */
