@@ -1,9 +1,8 @@
 public class MenuSlider implements MenuElement {
 
-    public int value;
-    private int min, max, scale;
+    private double value min, max, scale;
 
-    public MenuHeader(int defaultValue, int min, int max, int scale) {
+    public MenuHeader(double defaultValue, double min, double max, double scale) {
         this.value = defaultValue;
         this.min = min;
         this.max = max;
@@ -12,22 +11,27 @@ public class MenuSlider implements MenuElement {
 
     public String getAsString() {
         String asString = this.value + " [";
-        for (int i = 0; i < (this.max-this.min))
-        return asString;
-        // 15 [/////-----------]
+        double segmentSize = (this.max-this.min)/this.scale;//needs to be fixed
+        double valueSegment = this.value/(this.max-this.min);
+        for (int i = 0; i < this.scale; i++) {
+            asString += i <= valueSegment ? "/" : "-";
+        }
+        return asString + "]";
     }
 
     // MenuElement required methods
     public boolean canHover() { return true; }
 
     public void updateWithInput(MenuInput input) {
-
+        double segmentSize = (this.max-this.min)/this.scale;
+        double nextValue = value + segmentSize * input.x;
+        this.value = clamp(nextValue, this.min, this.max)
     }
     
     public void clearHover() {}
 
 	// clamps value between a minimum and maximum value
-	private static int clamp(int value, int min, int max) {
+	private static double clamp(double value, double min, double max) {
 		return Math.max(min, Math.min(max, value));
 	}
 }
