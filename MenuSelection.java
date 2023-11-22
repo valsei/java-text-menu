@@ -1,12 +1,22 @@
 import java.util.EnumSet;
 
+/**
+ * A type of menu element for choosing enums.
+ */
 public class MenuSelection implements MenuElement {
 
     public int selectedIndex = -1;
     public int hoverIndex = -1;
     private Object[] options;
 
-    // a couple type warnings but it's fine :)))
+    // border formats for hovered and selected options
+    private static final String[] borders = {"  x "," >x "," [x]",">[x]"};
+
+    /**
+     * creates a new enum selector using an enum type
+     * @param <E> requires that the class type is of an enum
+     * @param enumClass the class of the enum (do myEnum.class)
+     */
     public <E extends Enum<E>> MenuSelection(Class<E> enumClass) {
         if (!enumClass.isEnum()) {
             throw new IllegalArgumentException("Parameter class must be of an enum");
@@ -30,10 +40,11 @@ public class MenuSelection implements MenuElement {
     }
 
 	// render the selection and hover into a string to display
-    private static final String[] borders = {"  x "," >x "," [x]",">[x]"};
     public String getAsString() {
         String asString = "";
         for (int i = 0; i < options.length; i++) {
+            // find border format index to use by adding value of hover/select
+            // 0 is nothing, 1 is hover, 2 is selected, 3 is both
             int borderValue = (i == hoverIndex ? 1 : 0) +
                               (i == selectedIndex ? 2 : 0);
             asString += borders[borderValue].replace("x", options[i].toString());
@@ -51,10 +62,11 @@ public class MenuSelection implements MenuElement {
         try {
             return Enum.valueOf(enumClass, options[selectedIndex].toString());
         } catch (Exception e) {
-            return null;
+            return null; // very good yup
         }
     }
     
+    // used in whole menu completed check
     public boolean isCompleted() {
         return selectedIndex != -1;
     }
