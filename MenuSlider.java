@@ -16,6 +16,7 @@ public class MenuSlider implements MenuElement {
 	 * @param defaultValue the starting value, instead of using minimum
 	 */
 	public MenuSlider(String name, double min, double max, double scale, double defaultValue) {
+		this.name = name;
 		this.min = min;
 		this.max = max;
 		this.scale = scale;

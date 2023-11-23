@@ -82,6 +82,8 @@ public class Main {
         System.out.println(menu.getSelectionResult(option1.class));
         System.out.println(menu.getSelectionResult(option2.class));
         System.out.println(menu.getSelectionResult(option3.class));
+        System.out.println(menu.getSliderResult("test"));
+        System.out.println();
 
         //switch (getEnumValue(option1.class, "RED")) {
         switch (menu.getSelectionResult(option1.class)) {
