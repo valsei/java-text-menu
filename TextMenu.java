@@ -121,7 +121,23 @@ public class TextMenu {
         }
         throw new NoSuchElementException("Could not find a selection element with enum "+enumClass.toString());
     }
-    //public double getSliderResult()
+
+    /**
+     * gets the value of a slider element from the menu.
+     * @param sliderName the name that was used to create the slider
+     * @return the resulting value of the slider
+     * @throws NoSuchElementException when there is no slider element with the given name
+     */
+    public double getSliderResult(String sliderName) {
+        for (MenuElement sel : this.hoverableElements) {
+            // check if the element is the target slider element
+            if (sel instanceof MenuSlider &&
+                    ((MenuSlider)sel).matchesName(sliderName)) {
+                return ((MenuSlider)sel).getResult();
+            }
+        }
+        throw new NoSuchElementException("Could not find a slider element with name "+sliderName);
+    }
 
     /**
      * checks if all the applicable menu elements have been filled out.
@@ -131,7 +147,7 @@ public class TextMenu {
         for (MenuElement sel : this.hoverableElements) {
             if (sel instanceof MenuSelection && !((MenuSelection)sel).isCompleted()) {
                 return false;
-            }
+            } // MenuSlider always has a value so it's completed
         }
         return true;
     }

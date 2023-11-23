@@ -50,7 +50,7 @@ public class Main {
             .add("Stuff")
             .add(option3.class)
             .add()
-            .add(new MenuSlider("test", 0.0, 0.0, 10.0, 2.0));
+            .add(new MenuSlider("test",  5.0, 10.0, 4.0));
         
         MenuInput menuInput = new MenuInput();
 
