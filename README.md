@@ -1,4 +1,4 @@
-# java text menu v1.0.0
+# java-text-menu v1.0.0
 A highly advanced, very cool and professionally coded
 text-based menu predominantly aimed at
 choosing between enums via a controller.
