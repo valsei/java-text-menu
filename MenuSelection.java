@@ -64,7 +64,6 @@ public class MenuSelection<E extends Enum<E>> implements HoverableMenuElement<E>
 
     public E result() {
         try {
-            System.out.println(enumClass.getClass());
             return Enum.valueOf(this.enumClass, this.options[this.selectedIndex].toString());
         } catch (Exception e) {
             return null; // very good yup
@@ -74,5 +73,9 @@ public class MenuSelection<E extends Enum<E>> implements HoverableMenuElement<E>
 	// clamps value between a minimum and maximum value
 	private static int clamp(int value, int min, int max) {
 		return Math.max(min, Math.min(max, value));
+	}
+
+    public Class<E> getclass() {
+		return this.enumClass;
 	}
 }

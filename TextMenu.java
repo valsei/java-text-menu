@@ -109,8 +109,14 @@ public class TextMenu {
 		return list;
     }
 
-    public HoverableMenuElement<?> get(String name) {
+    /*public HoverableMenuElement<?> get(String name) {
         return this.hoverableElements.get(name);
+    }*/
+    /*public <T> T get(Class<T> clazz, String name) {
+        return clazz.cast(this.hoverableElements.get(name).result());
+    }*/
+    public <T> T get(Class<T> clazz, String name) {
+        return clazz.cast(this.hoverableElements.get(name).result());
     }
 
     /**

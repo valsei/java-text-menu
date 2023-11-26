@@ -14,4 +14,6 @@ public interface HoverableMenuElement<T> extends MenuElement {
 
     // get the result of the element once the menu is complete
     public T result();
+
+    public Class<T> getclass();
 }
