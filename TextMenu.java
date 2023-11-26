@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.NoSuchElementException;
 
 /**
@@ -6,43 +7,47 @@ import java.util.NoSuchElementException;
  * text-based menu predominantly aimed at
  * choosing between enums via a controller.
  * <p>
- * By valsei!! [https://github.com/valsei/java-text-menu]
- * <p>
- * Intended usage is to remove the clutter of 8+ different
- * autonomous programs to choose between. Now just choose one!
- * <p>
- * How to use: Create an autonomous framework method that makes decisions
- * based on enums. Then, give those enums to this text menu
- * and use it at the beginning of a single autonomous class.
- * Once the menu is complete, run the framework method but replace
- * any enum calls with menu.getSelectionResult(<enumClass>) calls.
+ * <i>By valsei!!</i> [https://github.com/valsei/java-text-menu]
  */
 public class TextMenu {
 
-    // separate lists so that switching between hoverable is easier to deal with
+    // entire list of elements, including both hoverable and not
     private ArrayList<MenuElement> elements = new ArrayList<>();
-    private ArrayList<MenuElement> hoverableElements = new ArrayList<>();
+
+    // list of hoverable elements, map type used in preventing name duplicates
+    private LinkedHashMap<String, HoverableMenuElement<?>> hoverableElements = new LinkedHashMap<>();
+
+    // index of currently hovered element
     private int hoverRow = 0;
 
     /**
-     * creates an empty TextMenu. use TextMenu.add(...) to add elements.
+     * creates an empty TextMenu. use TextMenu.add() to add elements.
      */
     public TextMenu() {}
-    public TextMenu(ArrayList<MenuElement> elements) {
-        this.elements = elements;
-    }
 
     /**
-     * adds a MenuElement to the end of the menu.
-     * @param element any MenuElement implementing object (ex. MenuHeader)
+     * adds a HoverableMenuElement to the end of the menu with a non-duplicate name.
+     * @param element any HoverableMenuElement implementing object (ex. MenuSelection)
      * @return returns itself so you can chain .add() methods
      */
-    public TextMenu add(MenuElement element) {
+    public TextMenu add(String name, HoverableMenuElement<?> element) {
         this.elements.add(element);
-        if (element.canHover()) {
-            this.hoverableElements.add(element);
+        if (this.hoverableElements.containsKey(name)) {
+            throw new IllegalArgumentException(
+                "The menu already contains an element with name: " + name
+            );
         }
+        this.hoverableElements.put(name, element);
         this.updateWithInput(new MenuInput());
+        return this;
+    }
+    public TextMenu add(MenuElement element) {
+        if (element instanceof HoverableMenuElement) {
+            throw new IllegalArgumentException(
+                "This is a HoverableMenuElement, so it must have an identifier name! ex. menu.add(name, element)"
+            );
+        }
+        this.elements.add(element);
         return this;
     }
     /**
@@ -51,8 +56,8 @@ public class TextMenu {
      * @param enumClass the class of the enum (do myEnum.class)
      * @return returns itself so you can chain .add() methods
      */
-    public <E extends Enum<E>> TextMenu add(Class<E> enumClass) {
-        return this.add(new MenuSelection(enumClass));
+    public <E extends Enum<E>> TextMenu add(String name, Class<E> enumClass) {
+        return this.add(name, new MenuSelection<E>(enumClass));
     }
     /**
      * adds a text section to the end of the menu. does not wrap.
@@ -77,14 +82,19 @@ public class TextMenu {
 	public void updateWithInput(MenuInput input) {
         if (!this.hoverableElements.isEmpty()) {
             // update hover row from y input
-            if (input.y != 0) {
-                this.hoverableElements.get(this.hoverRow).clearHover();
-                this.hoverRow = clamp(this.hoverRow - input.y, 0, this.hoverableElements.size() - 1);
+            if (input.getY() != 0) {
+                getMapValueAt(this.hoverRow).showHover(false);
+                this.hoverRow = clamp(this.hoverRow - input.getY(), 0, this.hoverableElements.size() - 1);
+                getMapValueAt(this.hoverRow).showHover(true);
             }
             // pass input into the hovered element
-            this.hoverableElements.get(this.hoverRow).updateWithInput(input);
+            getMapValueAt(this.hoverRow).updateWithInput(input);
         }
 	}
+
+    private HoverableMenuElement<?> getMapValueAt(int index) {
+        return this.hoverableElements.get(this.hoverableElements.keySet().toArray()[index]);
+    }
 	
     /**
      * renders the menu in its current state into a list of strings.
@@ -99,44 +109,8 @@ public class TextMenu {
 		return list;
     }
 
-    /**
-     * gets the enum chosen from a selection element in the menu.
-     * @param <E> requires that the class type is of an enum
-     * @param enumClass the class of the enum (do myEnum.class)
-     * @return the resulting enum that was chosen in its selection element
-     * @throws NoSuchElementException when there is no selection element of that enum or chosen option
-     */
-    public <E extends Enum<E>> E getSelectionResult(Class<E> enumClass) {
-        for (MenuElement sel : this.hoverableElements) {
-            // check if the element is the target selection element
-            if (sel instanceof MenuSelection &&
-                    ((MenuSelection)sel).matchesEnumClass(enumClass)) {
-                // get result from selection object
-                E selectedOption = ((MenuSelection)sel).getResult(enumClass);
-                if (selectedOption == null) {
-                    throw new NoSuchElementException("SelectionElement "+enumClass.toString()+" does not have a chosen option");
-                }
-                return selectedOption;
-            }
-        }
-        throw new NoSuchElementException("Could not find a selection element with enum "+enumClass.toString());
-    }
-
-    /**
-     * gets the value of a slider element from the menu.
-     * @param sliderName the name that was used to create the slider
-     * @return the resulting value of the slider
-     * @throws NoSuchElementException when there is no slider element with the given name
-     */
-    public double getSliderResult(String sliderName) {
-        for (MenuElement sel : this.hoverableElements) {
-            // check if the element is the target slider element
-            if (sel instanceof MenuSlider &&
-                    ((MenuSlider)sel).matchesName(sliderName)) {
-                return ((MenuSlider)sel).getResult();
-            }
-        }
-        throw new NoSuchElementException("Could not find a slider element with name "+sliderName);
+    public HoverableMenuElement<?> get(String name) {
+        return this.hoverableElements.get(name);
     }
 
     /**
@@ -144,10 +118,10 @@ public class TextMenu {
      * @return boolean of if the menu is completed
      */
     public boolean isCompleted() {
-        for (MenuElement sel : this.hoverableElements) {
-            if (sel instanceof MenuSelection && !((MenuSelection)sel).isCompleted()) {
+        for (HoverableMenuElement<?> sel : this.hoverableElements.values()) {
+            if (!sel.isCompleted()) {
                 return false;
-            } // MenuSlider always has a value so it's completed
+            }
         }
         return true;
     }

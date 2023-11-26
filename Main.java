@@ -42,15 +42,15 @@ public class Main {
             .add("To ensure correct operation of the IMU in this")
             .add()
             .add("colors")
-            .add(option1.class)
+            .add("op1", option1.class)
             .add()
             .add("numbers!! YUH")
-            .add(option2.class)
+            .add("op2", option2.class)
             .add()
             .add("Stuff")
-            .add(option3.class)
+            .add("op3", option3.class)
             .add()
-            .add(new MenuSlider("test",  5.0, 10.0, 4.0));
+            .add("sl1", new MenuSlider(5.0, 10.0, 4.0));
         
         MenuInput menuInput = new MenuInput();
 
@@ -79,14 +79,14 @@ public class Main {
             }
         }
         
-        System.out.println(menu.getSelectionResult(option1.class));
-        System.out.println(menu.getSelectionResult(option2.class));
-        System.out.println(menu.getSelectionResult(option3.class));
-        System.out.println(menu.getSliderResult("test"));
+        System.out.println(menu.get("op1").result());
+        System.out.println(menu.get("op2").result());
+        System.out.println(menu.get("op3").result());
+        System.out.println(menu.get("sl1").result());
         System.out.println();
 
         //switch (getEnumValue(option1.class, "RED")) {
-        switch (menu.getSelectionResult(option1.class)) {
+        switch (menu.get("op1").result()) {
             case RED:System.out.println("red!");break;
             case BLUE:System.out.println("blue!");break;
             case GREEN:System.out.println("green!");break;
