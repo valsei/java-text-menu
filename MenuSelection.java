@@ -64,7 +64,8 @@ public class MenuSelection<E extends Enum<E>> implements HoverableMenuElement<E>
 
     public E result() {
         try {
-            return (E)Enum.valueOf(this.enumClass, this.options[this.selectedIndex].toString());
+            System.out.println(enumClass.getClass());
+            return Enum.valueOf(this.enumClass, this.options[this.selectedIndex].toString());
         } catch (Exception e) {
             return null; // very good yup
         }
