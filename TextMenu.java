@@ -115,9 +115,13 @@ public class TextMenu {
     /*public <T> T get(Class<T> clazz, String name) {
         return clazz.cast(this.hoverableElements.get(name).result());
     }*/
-    public <T> T get(Class<T> clazz, String name) {
-        return clazz.cast(this.hoverableElements.get(name).result());
-    }
+    /*public <T> T get(String name) {
+        try {
+            return (T)this.hoverableElements.get(name).result();
+        } catch (Exception e) {
+            return null;
+        }
+    }*/
 
     /**
      * checks if all the applicable menu elements have been filled out.
