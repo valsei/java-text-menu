@@ -122,10 +122,12 @@ public class TextMenu {
             return null;
         }
     }*/
-
-    @SuppressWarnings("unchecked")
+    /*@SuppressWarnings("unchecked")
     public <T> T get(String name) {
         return (T)this.hoverableElements.get(name).result();
+    }*/
+    public <T> T get(String name, Class<T> clazz) {
+        return clazz.cast(this.hoverableElements.get(name).result());
     }
 
     /**
