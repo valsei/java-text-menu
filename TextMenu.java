@@ -123,6 +123,11 @@ public class TextMenu {
         }
     }*/
 
+    @SuppressWarnings("unchecked")
+    public <T> T get(String name) {
+        return (T)this.hoverableElements.get(name).result();
+    }
+
     /**
      * checks if all the applicable menu elements have been filled out.
      * @return boolean of if the menu is completed

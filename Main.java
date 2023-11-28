@@ -79,14 +79,14 @@ public class Main {
             }
         }
         
-        System.out.println(menu.get("op1"));
-        System.out.println(menu.get("op2"));
-        System.out.println(menu.get("op3"));
-        System.out.println(menu.get("sl1"));
+        System.out.println(menu.<option1>get("op1"));
+        System.out.println(menu.<option2>get("op2"));
+        System.out.println(menu.<option3>get("op3"));
+        System.out.println(menu.<Double>get("sl1"));
         System.out.println();
 
         //switch (getEnumValue(option1.class, "RED")) {
-        switch (menu.get("op1")) {
+        switch (menu.<option1>get("op1")) {
             case RED:System.out.println("red!");break;
             case BLUE:System.out.println("blue!");break;
             case GREEN:System.out.println("green!");break;
