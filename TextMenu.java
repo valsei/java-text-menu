@@ -148,7 +148,7 @@ public class TextMenu {
 
     /**
      * checks if all the applicable menu elements have been filled out.
-     * recommended to include a MenuFinishButton element.
+     * recommended to include a MenuFinishedButton element.
      * @return boolean of if the menu is completed
      */
     public boolean isCompleted() {
