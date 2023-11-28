@@ -11,10 +11,10 @@ import java.util.NoSuchElementException;
  */
 public class TextMenu {
 
-    // entire list of elements, including both hoverable and not
+    // entire list of elements, including both hoverable and not, used in printing all in order
     private ArrayList<MenuElement> elements = new ArrayList<>();
 
-    // list of hoverable elements, map type used in preventing name duplicates
+    // map type used in preventing element name duplicates, linked for indexing order
     private LinkedHashMap<String, HoverableMenuElement<?>> hoverableElements = new LinkedHashMap<>();
 
     // index of currently hovered element
@@ -26,7 +26,8 @@ public class TextMenu {
     public TextMenu() {}
 
     /**
-     * adds a HoverableMenuElement to the end of the menu with a non-duplicate name.
+     * adds a HoverableMenuElement to the end of the menu.
+     * @param name a unique internal name for the element; used in retrieving result later
      * @param element any HoverableMenuElement implementing object (ex. MenuSelection)
      * @return returns itself so you can chain .add() methods
      */
@@ -41,6 +42,12 @@ public class TextMenu {
         this.updateWithInput(new MenuInput());
         return this;
     }
+    /**
+     * adds a MenuElement to the end of the menu.
+     * note that HoverableMenuElements require a name parameter.
+     * @param element any MenuElement implementing object (ex. MenuHeader)
+     * @return returns itself so you can chain .add() methods
+     */
     public TextMenu add(MenuElement element) {
         if (element instanceof HoverableMenuElement) {
             throw new IllegalArgumentException(
@@ -53,6 +60,7 @@ public class TextMenu {
     /**
      * adds an enum selector section to the end of the menu.
      * @param <E> requires that the class type is of an enum
+     * @param name a unique internal name for the element; used in retrieving result later
      * @param enumClass the class of the enum (do myEnum.class)
      * @return returns itself so you can chain .add() methods
      */
@@ -60,7 +68,7 @@ public class TextMenu {
         return this.add(name, new MenuSelection<E>(enumClass));
     }
     /**
-     * adds a text section to the end of the menu. does not wrap.
+     * adds a text section to the end of the menu.
      * @param text any string of text
      * @return returns itself so you can chain .add() methods
      */
@@ -92,6 +100,7 @@ public class TextMenu {
         }
 	}
 
+    // returns element inside the hoverableElement map at an index
     private HoverableMenuElement<?> getMapValueAt(int index) {
         return this.hoverableElements.get(this.hoverableElements.keySet().toArray()[index]);
     }
@@ -126,12 +135,20 @@ public class TextMenu {
     public <T> T get(String name) {
         return (T)this.hoverableElements.get(name).result();
     }*/
-    public <T> T get(String name, Class<T> clazz) {
+
+    /**
+     * checks the result of a hoverable element using its name.
+     * @param <T> the type to return as
+     * @param name the unique internal name of the desired element
+     * @param clazz the class of the type to return as
+     */
+    public <T> T getResult(String name, Class<T> clazz) {
         return clazz.cast(this.hoverableElements.get(name).result());
     }
 
     /**
      * checks if all the applicable menu elements have been filled out.
+     * recommended to include a MenuFinishButton element.
      * @return boolean of if the menu is completed
      */
     public boolean isCompleted() {
