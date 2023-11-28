@@ -71,8 +71,4 @@ public class MenuSlider implements HoverableMenuElement<Double> {
 	private static double clamp(double value, double min, double max) {
 		return Math.max(min, Math.min(max, value));
 	}
-
-	public Class<Double> getclass() {
-		return Double.class;
-	}
 }
