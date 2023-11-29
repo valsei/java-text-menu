@@ -34,10 +34,10 @@ public class Main {
     public static void main(String[] args) {
 
         String input = "";
-        boolean running = true;
 
         TextMenu menu = new TextMenu();
-        menu.add("The Robot Controller app is obsolete. You should")
+        menu.add("(Sample text for estimating the horizontal space)")
+            .add("The Robot Controller app is obsolete. You should")
             .add("install the new version of this FTC season.")
             .add("To ensure correct operation of the IMU in this")
             .add()
@@ -86,11 +86,10 @@ public class Main {
         System.out.println(menu.getResult("op1", option1.class));
         System.out.println(menu.getResult("op2", option2.class));
         System.out.println(menu.getResult("op3", option3.class));
-        System.out.println(menu.getResult("sl1", Double.class) / 0.9);
+        System.out.println(menu.getResult("sl1", Double.class));
         System.out.println(menu.getResult("swi1", Boolean.class));
         System.out.println();
 
-        //switch (getEnumValue(option1.class, "RED")) {
         switch (menu.getResult("op1", option1.class)) {
             case RED:System.out.println("red!");break;
             case BLUE:System.out.println("blue!");break;

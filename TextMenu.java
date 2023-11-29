@@ -118,24 +118,6 @@ public class TextMenu {
 		return list;
     }
 
-    /*public HoverableMenuElement<?> get(String name) {
-        return this.hoverableElements.get(name);
-    }*/
-    /*public <T> T get(Class<T> clazz, String name) {
-        return clazz.cast(this.hoverableElements.get(name).result());
-    }*/
-    /*public <T> T get(String name) {
-        try {
-            return (T)this.hoverableElements.get(name).result();
-        } catch (Exception e) {
-            return null;
-        }
-    }*/
-    /*@SuppressWarnings("unchecked")
-    public <T> T get(String name) {
-        return (T)this.hoverableElements.get(name).result();
-    }*/
-
     /**
      * checks the result of a hoverable element using its name.
      * @param <T> the type to return as
