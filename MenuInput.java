@@ -1,5 +1,3 @@
-import java.util.concurrent.TimeUnit;
-
 /**
  * A class for bridging input methods to a text menu.
  * <p>
@@ -13,8 +11,8 @@ import java.util.concurrent.TimeUnit;
 public class MenuInput {
 
     // determines the type of input processing
-    // RAW is good for standalone console debugging via keyboard
-    private MenuInputType inputType;
+    // raw is good for standalone console debugging via keyboard
+    private final MenuInputType inputType;
     public enum MenuInputType {
         CONTROLLER,
         RAW,
@@ -22,25 +20,24 @@ public class MenuInput {
 
     // a constant for stick deadzone
     public static final double INPUT_DEADZONE = 0.05;
+    // constants for spacing out sustained input (in seconds)
+    private static final double STICK_TAP_COOLDOWN = 0.5;
+    private static final double STICK_HOLD_COOLDOWN = 0.2;
 
     // processed values
     private int x, y;
-    private boolean select;
-    
     // input timer to stop input spamming
     private double stickTimer; // in seconds
-
-    private static final double STICK_TAP_COOLDOWN = 0.5;
-    private static final double STICK_HOLD_COOLDOWN = 0.2;
     // switches on when past tap cooldown, then using hold cooldown
     private boolean isHoldingStick = false;
-
-    // so it only registers once per held press
-    private boolean hasAlreadySelected = false;
-    
     // time passed between update calls to update timers with
     private double deltaTime = 0.0;
     private Long lastTime = null;
+
+    // processed value
+    private boolean select;
+    // so it only registers once per held press
+    private boolean hasAlreadySelected = false;
 
     /**
      * creates a new input processing object.
@@ -62,18 +59,10 @@ public class MenuInput {
     }
     /**
      * creates a new input processing object.
-     * likely need to follow with a {@code .setInputType(inputType)}.
+     * <b>defaults to raw input type.</b>
      */
     public MenuInput() {
         this(MenuInputType.RAW, 0, 0, false);
-    }
-
-    /**
-     * changes the current input type.
-     * @param inputType an input type mode
-     */
-    public void setInputType(MenuInputType inputType) {
-        this.inputType = inputType;
     }
 
     /**
