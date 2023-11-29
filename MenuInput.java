@@ -21,23 +21,22 @@ public class MenuInput {
     }
 
     // a constant for stick deadzone
-    public final double INPUT_DEADZONE = 0.05;
+    public static final double INPUT_DEADZONE = 0.05;
 
     // processed values
     private int x, y;
     private boolean select;
     
-    // input timers to stop input spamming (in seconds)
-    private double xTimer = 0.0, yTimer = 0.0;
+    // input timer to stop input spamming
+    private double stickTimer; // in seconds
 
-    private final double stickTapCooldown = 0.5;
-    private final double stickHoldCooldown = 0.2;
+    private static final double STICK_TAP_COOLDOWN = 0.5;
+    private static final double STICK_HOLD_COOLDOWN = 0.2;
     // switches on when past tap cooldown, then using hold cooldown
-    private boolean isHoldingX = false, isHoldingY = false;
+    private boolean isHoldingStick = false;
 
     // so it only registers once per held press
     private boolean hasAlreadySelected = false;
-    private double selectTimer = 0.0;
     
     // time passed between update calls to update timers with
     private double deltaTime = 0.0;
@@ -85,28 +84,92 @@ public class MenuInput {
      * @return itself so you can use it immediately after updating it
      */
     public MenuInput update(double x, double y, boolean select) {
-        updateDeltaTime();
-        // reset input
+
+        // reset all
+        this.select = false;
         this.x = 0;
         this.y = 0;
-        // get new x,y input; consider deadzone
-        if (Math.hypot(x, y) > INPUT_DEADZONE) {
-            // snap input vector to axis
-            if (Math.abs(x) >= Math.abs(y)) {
-                this.x = (int)Math.signum(x);
-            } else {
-                this.y = (int)Math.signum(y);
-            }
-        }
 
-        // if the input type is a controller, consider input cooldowns
-        if (this.inputType == MenuInputType.CONTROLLER) {
+        switch (this.inputType) {
+
+            case RAW:
             
+                // directly apply the values
+                this.select = select;
+                this.x = (int)x;
+                this.y = (int)y;
 
+                break;
+
+            case CONTROLLER:
+
+                updateDeltaTime();
+
+                // only register one select per sustained input:
+                // initial select
+                if (!this.hasAlreadySelected && select) {
+                    this.select = true;
+                    this.hasAlreadySelected = true;
+                // if select button isn't held anymore reset it
+                } else if (this.hasAlreadySelected && !select) {
+                    this.hasAlreadySelected = false;
+                }
+
+                // get new x,y input; consider deadzone
+                if (Math.hypot(x, y) > INPUT_DEADZONE) {
+                    // snap input vector to axis
+                    if (Math.abs(x) >= Math.abs(y)) {
+                        this.x = (int)Math.signum(x);
+                    } else {
+                        this.y = (int)Math.signum(y);
+                    }
+                } else {
+                    // stopped holding stick, reset timer and held status
+                    this.isHoldingStick = false;
+                    this.stickTimer = 0;
+                }
+
+                // slightly cursed stick input spacing implementation:
+                // (sustained input -> repeated but spaced out input after an initial pause)
+
+                // if it's the initial stick input:
+                if (!this.isHoldingStick && this.stickTimer == 0) {
+                    this.stickTimer += this.deltaTime;
+                    // allows the x and y values to pass through
+                } else {
+                    this.stickTimer += this.deltaTime;
+
+                    // if it's held for long enough to pass the tap cooldown
+                    if (!this.isHoldingStick && this.stickTimer >= STICK_TAP_COOLDOWN) {
+                        this.stickTimer = this.stickTimer % STICK_TAP_COOLDOWN;
+                        this.isHoldingStick = true; // change to 
+                        // allows the x and y values to pass through
+
+                    // if it's past the tap cooldown and is also past the hold cooldown
+                    } else if (this.isHoldingStick && this.stickTimer >= STICK_HOLD_COOLDOWN) {
+                        this.stickTimer = this.stickTimer % STICK_HOLD_COOLDOWN;
+                        // allows the x and y values to pass through
+
+                    } else {
+                        // otherwise block the x and y values
+                        this.x = 0;
+                        this.y = 0;
+                    }
+                }
+
+                break;
         }
         
         return this;
     }
+
+    // updates the deltatime in seconds
+    private void updateDeltaTime() {
+        if (this.lastTime != null) {
+            this.deltaTime = (double)(System.nanoTime() - this.lastTime) / 1_000_000_000.0;
+        }
+        this.lastTime = System.nanoTime();
+    } 
 
     public int getX() {
         return this.x;
@@ -116,13 +179,5 @@ public class MenuInput {
     }
     public boolean getSelect() {
         return this.select;
-    }
-
-    // updates the deltatime in seconds
-    private void updateDeltaTime() {
-        if (this.lastTime != null) {
-            this.deltaTime = (double)(System.nanoTime() - this.lastTime) / 1_000_000_000.0;
-        }
-        this.lastTime = System.nanoTime();
-    }    
+    }   
 }
