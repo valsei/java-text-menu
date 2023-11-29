@@ -3,19 +3,20 @@ A highly advanced, very cool and professionally coded
 text-based menu predominantly aimed at
 choosing between enums via a controller.
 <p>
-By valsei!! [https://github.com/valsei/java-text-menu]
+<i>By valsei!!</i> [https://github.com/valsei/java-text-menu]
 <p>
 Intended usage is to remove the clutter of 8+ different
 autonomous programs to choose between. Now just choose one!
-<p>
-How to use: Create an autonomous framework method that makes decisions
-based on enums. Then, give those enums to this text menu
-and use it at the beginning of a single autonomous class.
-Once the menu is complete, run the framework method but replace
-any enum calls with menu.getSelectionResult(yourEnum.class) calls.
-<p>
 
-Important methods:
+## Setting up a menu
+Start by creating a menu and input object, which is used in bridging controller input to the menu.
+```java
+TextMenu menu = new TextMenu();
+MenuInput menuInput = new MenuInput(); // WIP
+```
+
+
+# old stuff wip
 ```java
 // adds a MenuElement to the end of the menu
 myMenu.add(something);
