@@ -32,7 +32,7 @@ public class MenuSwitch implements HoverableMenuElement<Boolean> {
 	}
 
 	public void updateWithInput(MenuInput input) {
-		if (intput.getSelect()) {
+		if (input.getSelect()) {
 			this.switchState = !this.switchState;
 		}
 	}
