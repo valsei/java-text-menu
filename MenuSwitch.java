@@ -22,7 +22,7 @@ public class MenuSwitch implements HoverableMenuElement<Boolean> {
 	// MenuElement interface required methods
 	
 	public String getAsString() {
-		return (this.isHovered ? ">" : " ") + (this.switchState ? " False [True]" : "[False] True ");
+		return (this.isHovered ? ">" : " ") + (this.switchState ? " False  | [True]" : "[False] |  True ");
 	}
 
 	// HoverableMenuElement interface required methods
@@ -32,14 +32,16 @@ public class MenuSwitch implements HoverableMenuElement<Boolean> {
 	}
 
 	public void updateWithInput(MenuInput input) {
-		this.switchState = input.getSelect() ? !this.switchState : this.switchState;
+		if (intput.getSelect()) {
+			this.switchState = !this.switchState;
+		}
 	}
 
 	public boolean isCompleted() {
-		return this.isPressed;
+		return true;
 	}
 
-	public Void result() {
-		return null;
+	public Boolean result() {
+		return this.switchState;
 	}
 }
