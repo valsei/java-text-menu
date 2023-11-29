@@ -3,8 +3,7 @@
  * <p>
  * This is made with the intention of supporting controllers!
  * That means that when passing input, one should set the input
- * type to {@code MenuInputType.CONTROLLER} either in the constructor
- * or with the method {@code .setInputType(inputType)}. The user can
+ * type to {@code InputType.CONTROLLER} in the constructor. The user can
  * then pass raw input into the {@code .update(...)} method and it
  * will be accordingly processed.
  */
@@ -12,8 +11,8 @@ public class MenuInput {
 
     // determines the type of input processing
     // raw is good for standalone console debugging via keyboard
-    private final MenuInputType inputType;
-    public enum MenuInputType {
+    private final InputType inputType;
+    public enum InputType {
         CONTROLLER,
         RAW,
     }
@@ -38,12 +37,12 @@ public class MenuInput {
     private boolean select;
     // so it only registers once per held press
     private boolean hasAlreadySelected = false;
-    
+
     /**
      * creates a new input processing object.
      * @param inputType determines the type of input processing
      */
-    public MenuInput(MenuInputType inputType) {
+    public MenuInput(InputType inputType) {
         this.inputType = inputType;
     }
     /**
@@ -51,7 +50,7 @@ public class MenuInput {
      * <b>defaults to raw input type.</b>
      */
     public MenuInput() {
-        this(MenuInputType.RAW);
+        this(InputType.RAW);
     }
 
     /**
