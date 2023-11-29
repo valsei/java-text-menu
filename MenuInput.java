@@ -38,31 +38,20 @@ public class MenuInput {
     private boolean select;
     // so it only registers once per held press
     private boolean hasAlreadySelected = false;
-
-    /**
-     * creates a new input processing object.
-     * @param inputType determines the type of input processing
-     * @param x starting x input value
-     * @param y starting y input value
-     * @param select starting select input value
-     */
-    public MenuInput(MenuInputType inputType, double x, double y, boolean select) {
-        this.inputType = inputType;
-        update(x, y, select);
-    }
+    
     /**
      * creates a new input processing object.
      * @param inputType determines the type of input processing
      */
     public MenuInput(MenuInputType inputType) {
-        this(inputType, 0, 0, false);
+        this.inputType = inputType;
     }
     /**
      * creates a new input processing object.
      * <b>defaults to raw input type.</b>
      */
     public MenuInput() {
-        this(MenuInputType.RAW, 0, 0, false);
+        this(MenuInputType.RAW);
     }
 
     /**
