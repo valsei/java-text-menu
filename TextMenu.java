@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
  * choosing between enums via a controller.
  * <p>
  * <i>By valsei!!</i> [https://github.com/valsei/java-text-menu]
+ * <p>
+ * Some examples and documentation can be found on the readme in github.
  */
 public class TextMenu {
 
