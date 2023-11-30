@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.NoSuchElementException;
 
 /**
  * A highly advanced, very cool and professionally coded
@@ -126,6 +127,9 @@ public class TextMenu {
      * @param clazz the class of the type to return as
      */
     public <T> T getResult(String name, Class<T> clazz) {
+        if (!this.hoverableElements.containsKey(name)) {
+            throw new NoSuchElementException("Could not find a menu element with the name: " + name);
+        }
         return clazz.cast(this.hoverableElements.get(name).result());
     }
 
