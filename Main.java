@@ -34,28 +34,35 @@ public class Main {
     public static void main(String[] args) {
 
         String input = "";
-        boolean running = true;
 
         TextMenu menu = new TextMenu();
-        menu.add("The Robot Controller app is obsolete. You should")
+        menu.add("(Sample text for estimating the horizontal space)")
+            .add("The Robot Controller app is obsolete. You should")
             .add("install the new version of this FTC season.")
             .add("To ensure correct operation of the IMU in this")
             .add()
             .add("colors")
-            .add(option1.class)
+            .add("op1", option1.class)
             .add()
             .add("numbers!! YUH")
-            .add(option2.class)
+            .add("op2", option2.class)
             .add()
             .add("Stuff")
-            .add(option3.class)
+            .add("op3", option3.class)
             .add()
-            .add(new MenuSlider("test",  5.0, 10.0, 4.0));
+            .add("other elements:")
+            .add()
+            .add("sl1", new MenuSlider(5.0, 10.0, 4.0))
+            .add()
+            .add("swi1", new MenuSwitch(true))
+            .add()
+            .add("fin1", new MenuFinishedButton());
+        ;
         
         MenuInput menuInput = new MenuInput();
 
         clear();
-        while (running) {
+        while (!menu.isCompleted()) {
 
             for (String line : menu.toListOfStrings()) {
 				System.out.println(line);
@@ -64,11 +71,8 @@ public class Main {
             clear();
 
             if (input.matches("quit|q")) {
-                if (menu.isCompleted()) {
-                    running = false;
-                } else {
-                    System.out.println(">>> You must complete the menu!\n");
-                }
+                System.out.println("force quitting...\n");
+                break;
             } else if (input.matches("[wasdc]")) {
 				int x = input.matches("[ad]") ? inputMap.get(input) : 0;
 				int y = input.matches("[ws]") ? inputMap.get(input) : 0;
@@ -78,15 +82,15 @@ public class Main {
 
             }
         }
-        
-        System.out.println(menu.getSelectionResult(option1.class));
-        System.out.println(menu.getSelectionResult(option2.class));
-        System.out.println(menu.getSelectionResult(option3.class));
-        System.out.println(menu.getSliderResult("test"));
+
+        System.out.println(menu.getResult("op1", option1.class));
+        System.out.println(menu.getResult("op2", option2.class));
+        System.out.println(menu.getResult("op3", option3.class));
+        System.out.println(menu.getResult("sl1", Double.class));
+        System.out.println(menu.getResult("swi1", Boolean.class));
         System.out.println();
 
-        //switch (getEnumValue(option1.class, "RED")) {
-        switch (menu.getSelectionResult(option1.class)) {
+        switch (menu.getResult("op1", option1.class)) {
             case RED:System.out.println("red!");break;
             case BLUE:System.out.println("blue!");break;
             case GREEN:System.out.println("green!");break;
