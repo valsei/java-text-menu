@@ -119,7 +119,7 @@ public class MenuInput {
                     // if it's held for long enough to pass the tap cooldown
                     if (!this.isHoldingStick && this.stickTimer >= STICK_TAP_COOLDOWN) {
                         this.stickTimer = this.stickTimer % STICK_TAP_COOLDOWN;
-                        this.isHoldingStick = true; // change to 
+                        this.isHoldingStick = true; // changes to holding cooldown mode
                         // allows the x and y values to pass through
 
                     // if it's past the tap cooldown and is also past the hold cooldown
