@@ -18,10 +18,10 @@ public class MenuInput {
     }
 
     // a constant for stick deadzone
-    public static final double INPUT_DEADZONE = 0.05;
+    public static final double INPUT_DEADZONE = 0.5;
     // constants for spacing out sustained input (in seconds)
-    private static final double STICK_TAP_COOLDOWN = 0.5;
-    private static final double STICK_HOLD_COOLDOWN = 0.2;
+    private static final double STICK_TAP_COOLDOWN = 0.3;
+    private static final double STICK_HOLD_COOLDOWN = 0.1;
 
     // processed values
     private int x, y;
@@ -55,12 +55,41 @@ public class MenuInput {
 
     /**
      * updates the input values. considers current input type.
-     * @param x current raw x input
-     * @param y current raw y input
+     * converts to and sums x,y inputs.
+     * @param x current raw x stick input
+     * @param y current raw y stick input
+     * @param xLeft dPad left pressed
+     * @param xRight dPad right pressed
+     * @param yDown dPad down pressed
+     * @param yUp dPad up pressed
      * @param select current raw select input
-     * @return itself so you can use it immediately after updating it
      */
-    public MenuInput update(double x, double y, boolean select) {
+    public void update(double x, double y, boolean xLeft, boolean xRight, boolean yDown, boolean yUp, boolean select) {
+        double xVal = clamp((xLeft ? -1 : 0) + (xRight ? 1 : 0) + x, -1, 1);
+        double yVal = clamp((yDown ? -1 : 0) + (yUp ? 1 : 0) + y, -1, 1);
+        this.update(xVal, yVal, select);
+    }
+    /**
+     * updates the input values. considers current input type.
+     * converts to x,y inputs.
+     * @param xLeft dPad left pressed
+     * @param xRight dPad right pressed
+     * @param yDown dPad down pressed
+     * @param yUp dPad up pressed
+     * @param select current raw select input
+     */
+    public void update(boolean xLeft, boolean xRight, boolean yDown, boolean yUp, boolean select) {
+        double xVal = (xLeft ? -1 : 0) + (xRight ? 1 : 0);
+        double yVal = (yDown ? -1 : 0) + (yUp ? 1 : 0);
+        this.update(xVal, yVal, select);
+    }
+    /**
+     * updates the input values. considers current input type.
+     * @param x current raw x stick input
+     * @param y current raw y stick input
+     * @param select current raw select input
+     */
+    public void update(double x, double y, boolean select) {
 
         // reset all
         this.select = false;
@@ -110,8 +139,11 @@ public class MenuInput {
                 // (sustained input -> repeated but spaced out input after an initial pause)
 
                 // if it's the initial stick input:
-                if (!this.isHoldingStick && this.stickTimer == 0) {
-                    this.stickTimer += this.deltaTime;
+                if (!this.isHoldingStick && this.stickTimer <= 0) {
+                    if (Math.hypot(x, y) > INPUT_DEADZONE) {
+                        // only starting adding deltatime if the stick is held
+                        this.stickTimer += this.deltaTime;
+                    }
                     // allows the x and y values to pass through
                 } else {
                     this.stickTimer += this.deltaTime;
@@ -136,8 +168,6 @@ public class MenuInput {
 
                 break;
         }
-        
-        return this;
     }
 
     // updates the deltatime in seconds
@@ -156,5 +186,10 @@ public class MenuInput {
     }
     public boolean getSelect() {
         return this.select;
-    }   
+    }
+
+	// clamps value between a minimum and maximum value
+	private static double clamp(double value, double min, double max) {
+		return Math.max(min, Math.min(max, value));
+	}
 }

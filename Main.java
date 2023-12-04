@@ -78,7 +78,8 @@ public class Main {
 				int y = input.matches("[ws]") ? inputMap.get(input) : 0;
 				boolean select = input.matches("c");
 
-				menu.updateWithInput(menuInput.update(x, y, select));
+                menuInput.update(x, y, select);
+				menu.updateWithInput(menuInput);
 
             }
         }

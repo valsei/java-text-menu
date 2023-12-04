@@ -1,4 +1,4 @@
-# java-text-menu v2.0
+# java-text-menu v2.1
 A highly advanced, very cool and professionally coded text-based menu predominantly aimed at choosing between enums via a controller.
 <p>
 <i>By valsei!!</i> [https://github.com/valsei/java-text-menu]
