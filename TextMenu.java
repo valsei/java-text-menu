@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.NoSuchElementException;
 
@@ -18,6 +19,9 @@ public class TextMenu {
 
     // map type used in preventing element name duplicates, linked for indexing order
     private LinkedHashMap<String, HoverableMenuElement<?>> hoverableElements = new LinkedHashMap<>();
+
+    // map that stores each rendered element to prevent rerendering every loop cycle
+    private HashMap<MenuElement, String> elementRenderCache = new HashMap<>();
 
     // index of currently hovered element
     private int hoverRow = 0;
@@ -41,7 +45,7 @@ public class TextMenu {
             );
         }
         this.hoverableElements.put(name, element);
-        this.updateWithInput(new MenuInput());
+        this.updateWithInput(new MenuInput().update(0, 1, false));
         return this;
     }
     /**
@@ -93,14 +97,27 @@ public class TextMenu {
         if (!this.hoverableElements.isEmpty()) {
             // update hover row from y input
             if (input.getY() != 0) {
+                // stop hovering previous line
                 getMapValueAt(this.hoverRow).showHover(false);
+                updateRenderCacheAtHover();
+                // move down to next row
                 this.hoverRow = clamp(this.hoverRow - input.getY(), 0, this.hoverableElements.size() - 1);
+                // start hovering new row
                 getMapValueAt(this.hoverRow).showHover(true);
+                updateRenderCacheAtHover();
             }
-            // pass input into the hovered element
-            getMapValueAt(this.hoverRow).updateWithInput(input);
+            if (input.isActive()) {
+                // pass input into the hovered element
+                getMapValueAt(this.hoverRow).updateWithInput(input);
+                updateRenderCacheAtHover();
+            }
         }
 	}
+
+    // updates the render cache for the element currently being hovered over
+    private void updateRenderCacheAtHover() {
+        this.elementRenderCache.put(getMapValueAt(this.hoverRow), getMapValueAt(this.hoverRow).getAsString());
+    }
 
     // returns element inside the hoverableElement map at an index
     private HoverableMenuElement<?> getMapValueAt(int index) {
@@ -115,7 +132,22 @@ public class TextMenu {
     public ArrayList<String> toListOfStrings() {
 		ArrayList<String> list = new ArrayList<>();
         for (MenuElement element : this.elements) {
-        	list.add(element.getAsString());
+
+            // retrieve as string from element render cache
+            String asString = null;
+            if (this.elementRenderCache.containsKey(element)) {
+                asString = this.elementRenderCache.get(element);
+            } else {
+                asString = element.getAsString();
+                this.elementRenderCache.put(element, asString);
+            }
+
+            if (element instanceof MenuFinishedButton) {
+                // subtract 1 because that's the finish button
+                asString += " (" + (countIncompleted() - 1) + " incomplete)";
+            }
+
+        	list.add(asString);
         }
 		return list;
     }
@@ -145,6 +177,20 @@ public class TextMenu {
             }
         }
         return true;
+    }
+
+    /**
+     * checks completion status and counts the incomplete
+     * @return number of incomplete elements
+     */
+    public int countIncompleted() {
+        int incomplete = 0;
+        for (HoverableMenuElement<?> sel : this.hoverableElements.values()) {
+            if (!sel.isCompleted()) {
+                incomplete++;
+            }
+        }
+        return incomplete;
     }
 
 	// clamps value between a minimum and maximum value

@@ -64,10 +64,10 @@ public class MenuInput {
      * @param yUp dPad up pressed
      * @param select current raw select input
      */
-    public void update(double x, double y, boolean xLeft, boolean xRight, boolean yDown, boolean yUp, boolean select) {
+    public MenuInput update(double x, double y, boolean xLeft, boolean xRight, boolean yDown, boolean yUp, boolean select) {
         double xVal = clamp((xLeft ? -1 : 0) + (xRight ? 1 : 0) + x, -1, 1);
         double yVal = clamp((yDown ? -1 : 0) + (yUp ? 1 : 0) + y, -1, 1);
-        this.update(xVal, yVal, select);
+        return this.update(xVal, yVal, select);
     }
     /**
      * updates the input values. considers current input type.
@@ -78,10 +78,10 @@ public class MenuInput {
      * @param yUp dPad up pressed
      * @param select current raw select input
      */
-    public void update(boolean xLeft, boolean xRight, boolean yDown, boolean yUp, boolean select) {
+    public MenuInput update(boolean xLeft, boolean xRight, boolean yDown, boolean yUp, boolean select) {
         double xVal = (xLeft ? -1 : 0) + (xRight ? 1 : 0);
         double yVal = (yDown ? -1 : 0) + (yUp ? 1 : 0);
-        this.update(xVal, yVal, select);
+        return this.update(xVal, yVal, select);
     }
     /**
      * updates the input values. considers current input type.
@@ -89,7 +89,7 @@ public class MenuInput {
      * @param y current raw y stick input
      * @param select current raw select input
      */
-    public void update(double x, double y, boolean select) {
+    public MenuInput update(double x, double y, boolean select) {
 
         // reset all
         this.select = false;
@@ -168,6 +168,15 @@ public class MenuInput {
 
                 break;
         }
+        return this;
+    }
+
+    /**
+     * checks if there are any active inputs being used
+     * @return if inputs are active
+     */
+    public boolean isActive() {
+        return Math.abs(this.x) > 0 || Math.abs(this.y) > 0 || this.select;
     }
 
     // updates the deltatime in seconds

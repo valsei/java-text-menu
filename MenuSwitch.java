@@ -14,8 +14,7 @@ public class MenuSwitch implements HoverableMenuElement<Boolean> {
 	 */
 	public MenuSwitch(boolean defaultState, String falseName, String trueName) {
 		this(defaultState);
-		String[] optionNamesTemp = {falseName, trueName};
-		this.optionNames = optionNamesTemp;
+		this.optionNames = new String[] {falseName, trueName};
 	}
 	/**
 	 * creates a new boolean switch.
