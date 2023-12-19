@@ -45,6 +45,7 @@ public class TextMenu {
             );
         }
         this.hoverableElements.put(name, element);
+        // show starting hover
         this.updateWithInput(new MenuInput().update(0, 1, false));
         return this;
     }
@@ -104,7 +105,7 @@ public class TextMenu {
                 this.hoverRow = clamp(this.hoverRow - input.getY(), 0, this.hoverableElements.size() - 1);
                 // start hovering new row
                 getMapValueAt(this.hoverRow).showHover(true);
-                updateRenderCacheAtHover();
+                // render cache will be updated in the if block below since input is active
             }
             if (input.isActive()) {
                 // pass input into the hovered element
@@ -143,8 +144,7 @@ public class TextMenu {
             }
 
             if (element instanceof MenuFinishedButton) {
-                // subtract 1 because that's the finish button
-                asString += " (" + (countIncompleted() - 1) + " incomplete)";
+                asString += " (" + countIncompleted() + " incomplete)";
             }
 
         	list.add(asString);
@@ -180,13 +180,13 @@ public class TextMenu {
     }
 
     /**
-     * checks completion status and counts the incomplete
+     * checks completion status and counts the incomplete, excludes MenuFinishedButton
      * @return number of incomplete elements
      */
     public int countIncompleted() {
         int incomplete = 0;
         for (HoverableMenuElement<?> sel : this.hoverableElements.values()) {
-            if (!sel.isCompleted()) {
+            if (!(sel instanceof MenuFinishedButton || sel.isCompleted())) {
                 incomplete++;
             }
         }
