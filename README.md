@@ -1,9 +1,19 @@
-# java-text-menu v2.1
-A highly advanced, very cool and professionally coded text-based menu predominantly aimed at choosing between enums via a controller.
+# java-text-menu v3.0
+A highly advanced, very cool and definitely professionally coded text-based menu predominantly aimed at choosing between enums via a controller.
 <p>
 <i>By valsei!!</i> [https://github.com/valsei/java-text-menu]
 <p>
 Intended usage is to remove the clutter of 8+ different autonomous programs to choose between. Now just choose one!
+
+## v3.0 changelog
+- added scrolling, accessible in the constructor: `TextMenu(viewHeight, viewMargin)` otherwise disabled by default
+  - `viewHeight` and `viewMargin` must be 0 or greater
+  - `viewHeight` determines the number of element rows to show at once
+  - `viewMargin` is the number of element rows that must show above/below the hover cursor at all times
+  - note that element rows refers to <i>all</i> menu elements, not just hoverable
+- added an element render cache so it doesn't remake the strings for every element every loop cycle
+- the menu finish button element now shows number of incomplete elements
+- can now set custom names to the true/false options in switch elements
 
 ## Setting up a menu
 Start by creating a menu and input object, which is used in bridging controller input to the menu.

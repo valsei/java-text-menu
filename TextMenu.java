@@ -4,9 +4,9 @@ import java.util.LinkedHashMap;
 import java.util.NoSuchElementException;
 
 /**
- * A highly advanced, very cool and professionally coded
- * text-based menu predominantly aimed at
- * choosing between enums via a controller.
+ * A highly advanced, very cool and definitely
+ * professionally coded text-based menu predominantly
+ * aimed at choosing between enums via a controller.
  * <p>
  * <i>By valsei!!</i> [https://github.com/valsei/java-text-menu]
  * <p>
@@ -26,16 +26,34 @@ public class TextMenu {
     // index of currently hovered element
     private int hoverRow = 0;
 
+    // scroll position
+    private int scrollPos = -1;
+    // number of rows that will be displayed at a time
+    private int viewHeight = 0;
+    // number of rows to pad the scroll view
+    private int viewMargin = 0;
+
     /**
-     * creates an empty TextMenu. use TextMenu.add() to add elements.
+     * creates an empty TextMenu. use {@code .add()} to add elements.
      */
     public TextMenu() {}
+    /**
+     * creates an empty TextMenu. use {@code .add()} to add elements
+     * @param viewHeight number of rows to show; show all with 0
+     */
+    public TextMenu(int viewHeight, int viewMargin) {
+        if (viewHeight < 0 || viewMargin < 0) {
+            throw new IllegalArgumentException("Menu view params must be greater than or equal to 0!");
+        }
+        this.viewHeight = viewHeight;
+        this.viewMargin = viewMargin;
+    }
 
     /**
      * adds a HoverableMenuElement to the end of the menu.
      * @param name a unique internal name for the element; used in retrieving result later
      * @param element any HoverableMenuElement implementing object (ex. MenuSelection)
-     * @return returns itself so you can chain .add() methods
+     * @return returns itself so you can chain {@code .add()} methods
      */
     public TextMenu add(String name, HoverableMenuElement<?> element) {
         this.elements.add(element);
@@ -53,7 +71,7 @@ public class TextMenu {
      * adds a MenuElement to the end of the menu.
      * note that HoverableMenuElements require a name parameter.
      * @param element any MenuElement implementing object (ex. MenuHeader)
-     * @return returns itself so you can chain .add() methods
+     * @return returns itself so you can chain {@code .add()} methods
      */
     public TextMenu add(MenuElement element) {
         if (element instanceof HoverableMenuElement) {
@@ -68,8 +86,8 @@ public class TextMenu {
      * adds an enum selector section to the end of the menu.
      * @param <E> requires that the class type is of an enum
      * @param name a unique internal name for the element; used in retrieving result later
-     * @param enumClass the class of the enum (do myEnum.class)
-     * @return returns itself so you can chain .add() methods
+     * @param enumClass the class of the enum (do {@code myEnum.class})
+     * @return returns itself so you can chain {@code .add()} methods
      */
     public <E extends Enum<E>> TextMenu add(String name, Class<E> enumClass) {
         return this.add(name, new MenuSelection<E>(enumClass));
@@ -77,14 +95,14 @@ public class TextMenu {
     /**
      * adds a text section to the end of the menu.
      * @param text any string of text
-     * @return returns itself so you can chain .add() methods
+     * @return returns itself so you can chain {@code .add()} methods
      */
     public TextMenu add(String text) {
         return this.add(new MenuHeader(text));
     }
     /**
      * adds an empty line for spacing to the end of the menu.
-     * @return returns itself so you can chain .add() methods
+     * @return returns itself so you can chain {@code .add()} methods
      */
     public TextMenu add() {
         return this.add("");
@@ -106,6 +124,7 @@ public class TextMenu {
                 // start hovering new row
                 getMapValueAt(this.hoverRow).showHover(true);
                 // render cache will be updated in the if block below since input is active
+                updateScrollView();
             }
             if (input.isActive()) {
                 // pass input into the hovered element
@@ -131,25 +150,71 @@ public class TextMenu {
      * @return list of strings representing the menu elements
      */
     public ArrayList<String> toListOfStrings() {
+
+        if (this.scrollPos < 0) {
+            updateScrollView();
+        }
+
 		ArrayList<String> list = new ArrayList<>();
-        for (MenuElement element : this.elements) {
 
-            // retrieve as string from element render cache
-            String asString = null;
-            if (this.elementRenderCache.containsKey(element)) {
-                asString = this.elementRenderCache.get(element);
-            } else {
-                asString = element.getAsString();
-                this.elementRenderCache.put(element, asString);
+        //for (MenuElement element : this.elements) {
+        for (int i = 0; i < this.elements.size(); i++) {
+            // only show the lines within the scrolled view
+            if ((i >= this.scrollPos && i < this.scrollPos + this.viewHeight) || this.viewHeight <= 0) {
+                MenuElement element = this.elements.get(i);
+
+                // retrieve as string from element render cache
+                String asString = null;
+                if (this.elementRenderCache.containsKey(element)) {
+                    asString = this.elementRenderCache.get(element);
+                } else {
+                    asString = element.getAsString();
+                    this.elementRenderCache.put(element, asString);
+                }
+
+                if (element instanceof MenuFinishedButton) {
+                    asString += " (" + countIncompleted() + " incomplete)";
+                }
+
+        	    list.add(asString);
+            // indicate there's more rows outside of scroll view
+            } else if (i == this.scrollPos - 1) {
+                list.add("˄˄˄˄˄");
+            } else if (i == this.scrollPos + this.viewHeight) {
+                list.add("˅˅˅˅˅");
             }
-
-            if (element instanceof MenuFinishedButton) {
-                asString += " (" + countIncompleted() + " incomplete)";
-            }
-
-        	list.add(asString);
         }
 		return list;
+    }
+
+    // calculates the starting index of the scrolled view
+    private void updateScrollView() {
+        // if viewHeight is 0 (show all), lock scroll position to the top
+        if (this.viewHeight <= 0) {
+            this.scrollPos = 0;
+        } else {
+            // get the actual index that is being hovered over; snap to start/end
+            int elementIndex = 0;
+            if (this.hoverRow == 0) {
+                elementIndex = 0;
+            } else if (this.hoverRow == this.hoverableElements.size() - 1) {
+                elementIndex = this.elements.size() - 1;
+            } else {
+                elementIndex = this.elements.indexOf(getMapValueAt(this.hoverRow));
+            }
+
+            // yeahhhh i'm not going to explain this one
+            // logic drafted here: https://www.desmos.com/calculator/zazudhzflp
+            this.scrollPos = clamp(
+                (int)(clamp(
+                    this.scrollPos + this.viewHeight / 2.0,
+                    elementIndex - this.viewHeight / 2.0 + this.viewMargin + 1,
+                    elementIndex + this.viewHeight / 2.0 - this.viewMargin
+                ) - this.viewHeight / 2.0),
+                0,
+                this.elements.size() - this.viewHeight
+            );
+        }
     }
 
     /**
@@ -195,6 +260,9 @@ public class TextMenu {
 
 	// clamps value between a minimum and maximum value
 	private static int clamp(int value, int min, int max) {
+		return Math.max(min, Math.min(max, value));
+	}
+	private static double clamp(double value, double min, double max) {
 		return Math.max(min, Math.min(max, value));
 	}
 }

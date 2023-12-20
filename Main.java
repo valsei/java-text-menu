@@ -56,8 +56,12 @@ public class Main {
             .add()
             .add("swi1", new MenuSwitch(true))
             .add()
-            .add("fin1", new MenuFinishedButton());
+            .add("fin1", new MenuFinishedButton())
         ;
+        /*for (int i = 0; i < 10; i++) {
+            menu.add("#"+i, new MenuSwitch(true, ""+i, "z"));
+        }
+        menu.add("fin1", new MenuFinishedButton());*/
         
         MenuInput menuInput = new MenuInput();
 
