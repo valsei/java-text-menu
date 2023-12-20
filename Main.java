@@ -1,3 +1,8 @@
+/*
+ * THIS IS A TESTING CLASS USED IN DEVELOPING TEXTMENU!
+ * it's not necessary to copy this class over when using the project lol
+ */
+
 import java.util.*;
 
 public class Main {
