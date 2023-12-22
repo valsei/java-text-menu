@@ -35,6 +35,8 @@ public class MenuFinishedButton implements HoverableMenuElement<Void> {
 	}
 
 	public Void result() {
+		// this element doesn't have anything to return
+		// but is required to because of the HoverableMenuElement interface
 		return null;
 	}
 }
