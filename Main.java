@@ -93,14 +93,14 @@ public class Main {
             }
         }
 
-        System.out.println(menu.getResult("op1", option1.class));
-        System.out.println(menu.getResult("op2", option2.class));
-        System.out.println(menu.getResult("op3", option3.class));
-        System.out.println(menu.getResult("sl1", Double.class));
-        System.out.println(menu.getResult("swi1", Boolean.class));
+        System.out.println(menu.getResult(option1.class, "op1"));
+        System.out.println(menu.getResult(option2.class, "op2"));
+        System.out.println(menu.getResult(option3.class, "op3"));
+        System.out.println(menu.getResult(Double.class, "sl1"));
+        System.out.println(menu.getResult(Boolean.class, "swi1"));
         System.out.println();
 
-        switch (menu.getResult("op1", option1.class)) {
+        switch (menu.getResult(option1.class, "op1")) {
             case RED:System.out.println("red!");break;
             case BLUE:System.out.println("blue!");break;
             case GREEN:System.out.println("green!");break;

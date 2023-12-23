@@ -1,11 +1,16 @@
-# java-text-menu v3.0
-A highly advanced, very cool and definitely professionally coded text-based menu predominantly aimed at choosing between enums via a controller.
+# java-text-menu v3.1
+A flexible, very cool and definitely professionally coded text-based menu predominantly meant for choosing between enums using a controller.
 <p>
 <i>By valsei!!</i> [https://github.com/valsei/java-text-menu]
 <p>
-Intended usage is to remove the clutter of 8+ different autonomous programs to choose between. Now just choose one!
+The intended usage is to remove the clutter of 8+ different autonomous programs for each combination of situations and options. Now just choose one with your own custom menu!
 
-## v3.0 changelog
+# changelog
+A summary of important changes; significant updates will recieve a version increase (1.0 -> 1.1), but minor commenting or readme fixes will just be included in the next significant update.
+## v3.1
+- flipped the `.getResult()` method's parameters to take the return type class first and element name second
+- made `.getResult()` throw an error if the given class doesn't match the given element name
+## v3.0
 - added scrolling, accessible in the constructor: `TextMenu(viewHeight, viewMargin)` otherwise disabled by default
   - `viewHeight` and `viewMargin` must be 0 or greater
   - `viewHeight` determines the number of element rows to show at once
@@ -14,8 +19,14 @@ Intended usage is to remove the clutter of 8+ different autonomous programs to c
 - added an element render cache so it doesn't remake the strings for every element every loop cycle
 - the menu finish button element now shows number of incomplete elements
 - can now set custom names to the true/false options in switch elements
+## v2.0
+- made the project more modular and flexible, separated hoverable elements and text elements
+- added better controller input support
+## v1.0
+- the project is now functional lol
+- supports enum elements and double elements
 
-## Setting up a menu
+# Setting up a menu
 Start by creating a menu and input object, which is used in bridging controller input to the menu.
 ```java
 TextMenu menu = new TextMenu();
@@ -65,12 +76,12 @@ while (!menu.isCompleted()) {
 ## Reading from a menu
 Example code:
 ```java
-// the second parameter is the type to return as
-Colors chosenColor = menu.getResult("color-picker-1", Colors.class);
-double waitTime = menu.getResult("wait-slider-1", Double.class);
+// the first parameter is the type to return as
+Colors chosenColor = menu.getResult(Colors.class, "color-picker-1");
+double waitTime = menu.getResult(Double.class, "wait-slider-1");
 ```
 ```java
-switch (menu.getResult("color-picker-1", Colors.class)) {
+switch (menu.getResult(Colors.class, "color-picker-1")) {
     case RED:
     // etc.
 }
