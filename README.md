@@ -86,3 +86,5 @@ switch (menu.getResult(Colors.class, "color-picker-1")) {
     // etc.
 }
 ```
+
+-# (edit for posterity)
