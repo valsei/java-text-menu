@@ -1,3 +1,5 @@
+package net.valsei.java_text_menu;
+
 /**
  * An interface for interactable elements that can be shoved into the menu.
  */

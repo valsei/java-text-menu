@@ -1,4 +1,4 @@
-/*
+package net.valsei.java_text_menu;/*
  * THIS IS A TESTING CLASS USED IN DEVELOPING TEXTMENU!
  * it's not necessary to copy this class over when using the project lol
  */
