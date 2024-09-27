@@ -1,3 +1,5 @@
+package net.valsei.java_text_menu;
+
 /**
  * A type of menu element for choosing booleans, switching between on and off.
  */

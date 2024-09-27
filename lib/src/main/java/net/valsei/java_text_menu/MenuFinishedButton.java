@@ -1,3 +1,5 @@
+package net.valsei.java_text_menu;
+
 /**
  * A type of menu element that can stop the menu from registering as completed before the
  * user is sure they have selected the right options. Once pressed, it will count as completed.

@@ -1,3 +1,5 @@
+package net.valsei.java_text_menu;
+
 /**
  * A class for bridging input methods to a text menu.
  * <p>
