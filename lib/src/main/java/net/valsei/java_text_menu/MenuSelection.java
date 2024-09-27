@@ -1,3 +1,5 @@
+package net.valsei.java_text_menu;
+
 import java.util.EnumSet;
 
 /**
@@ -15,7 +17,7 @@ public class MenuSelection<E extends Enum<E>> implements HoverableMenuElement<E>
 
     /**
      * creates a new enum selector using an enum type
-     * @param <E> requires that the class type is of an enum
+     * param <E> requires that the class type is of an enum
      * @param enumClass the class of the enum (do myEnum.class)
      */
     public MenuSelection(Class<E> enumClass) {
