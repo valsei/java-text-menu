@@ -95,6 +95,17 @@ public class TextMenu {
         return this.add(name, new MenuSelection<E>(enumClass));
     }
     /**
+     * adds an enum selector (with a default option) section to the end of the menu.
+     * @param <E> requires that the class type is of an enum
+     * @param name a unique internal name for the element; used in retrieving result later
+     * @param enumClass the class of the enum (do {@code myEnum.class})
+     * @param defaultIndex the index of the option to default to (typing 0 is fine usually)
+     * @return returns itself so you can chain {@code .add()} methods
+     */
+    public <E extends Enum<E>> TextMenu add(String name, Class<E> enumClass, int defaultIndex) {
+        return this.add(name, new MenuSelection<E>(enumClass, defaultIndex));
+    }
+    /**
      * adds a text section to the end of the menu.
      * @param text any string of text
      * @return returns itself so you can chain {@code .add()} methods

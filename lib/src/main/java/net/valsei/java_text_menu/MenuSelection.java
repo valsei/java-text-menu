@@ -31,6 +31,16 @@ public class MenuSelection<E extends Enum<E>> implements HoverableMenuElement<E>
 		}
 		this.options = options;
     }
+    /**
+     * creates a new enum selector using an enum type with a default selected option
+     * param <E> requires that the class type is of an enum
+     * @param enumClass the class of the enum (do myEnum.class)
+     * @param defaultIndex the index of the option to default to (typing 0 is fine usually)
+     */
+    public MenuSelection(Class<E> enumClass, int defaultIndex) {
+        this(enumClass);
+        selectedIndex = clamp(defaultIndex, -1, options.length);
+    }
 
 	// MenuElement interface required methods
 

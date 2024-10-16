@@ -1,4 +1,4 @@
-# java-text-menu v3.1
+# java-text-menu v3.2
 A flexible, very cool and definitely professionally coded text-based menu predominantly meant for choosing between enums using a controller.
 <p>
 <i>By valsei!!</i> [https://github.com/valsei/java-text-menu]
@@ -7,6 +7,10 @@ The intended usage is to remove the clutter of 8+ different autonomous programs 
 
 # changelog
 A summary of important changes; significant updates will recieve a version increase (1.0 -> 1.1), but minor commenting or readme fixes will just be included in the next significant update.
+## v3.2
+- added a constructor for the enum selector that accepts a default option: `MenuSelection(enumClass, defaultIndex)`
+  - this causes it to immediately count as a completed element
+  - there is also a `myMenu.add(name, enumClass, defaultIndex)` shortcut version
 ## v3.1
 - flipped the `.getResult()` method's parameters to take the return type class first and element name second
 - made `.getResult()` throw an error if the given class doesn't match the given element name
