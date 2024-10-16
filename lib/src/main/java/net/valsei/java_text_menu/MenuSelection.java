@@ -39,7 +39,7 @@ public class MenuSelection<E extends Enum<E>> implements HoverableMenuElement<E>
      */
     public MenuSelection(Class<E> enumClass, int defaultIndex) {
         this(enumClass);
-        selectedIndex = clamp(defaultIndex, -1, options.length);
+        selectedIndex = clamp(defaultIndex, -1, options.length - 1);
     }
 
 	// MenuElement interface required methods
